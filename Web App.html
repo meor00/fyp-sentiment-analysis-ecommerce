@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentiment Analysis Review</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5; /* light gray background */
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      color: #2d3740; /* dark blue */
+      background-color: #f0e4d3; /* light orange */
+      font-family: "Dancing Script", cursive; /* cursive font for title */
+    }
+
+    .sections {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      width: 30%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .search-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #fileInput {
+      display: inline-block;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #searchInput {
+      padding: 10px;
+      width: 60%;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-left: 20px;
+    }
+
+    #searchButton {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #2d3740; /* dark blue */
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #resultContainer {
+      width: 80%;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Sentiment Analysis Review</h1>
+  <div class="sections">
+    <div class="section">
+      <h3 class="section-title">Product</h3>
+    </div>
+    <div class="section">
+      <h3 class="section-title">Category</h3>
+    </div>
+    <div class="section">
+      <h3 class="section-title">Reviews</h3>
+    </div>
+  </div>
+  <div class="search-container">
+    <label for="fileInput">Upload CSV file:</label>
+    <input type="file" id="fileInput" accept=".csv">
+    <input type="text" id="searchInput" placeholder="Enter review">
+    <button id="searchButton" onclick="searchReview()">Search</button>
+  </div>
+  <div id="resultContainer"></div>
+
+  <script>
+    function searchReview() {
+      // Check if the user uploaded a file
+      const file = document.getElementById("fileInput").files[0];
+      if (!file) {
+        alert("Please upload a CSV file first!");
+        return;
+      }
+
+      // Read the uploaded CSV file using FileReader
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        // Parse the CSV data
+        const data = event.target.result.split("\n");
+        const headers = data[0].split(",");
+
+        // Display the dataset in a table
+        let tableHtml = "<table><tr>";
+        headers.forEach(header => {
+          tableHtml += `<th>${header}</th>`;
+        });
+        tableHtml += "</tr>";
+
+        data.slice(1).forEach(row => {
+          const columns = row.split(",");
+          tableHtml += "<tr>";
+          columns.forEach(column => {
+            tableHtml += `<td>${column}</td>`;
+          });
+          tableHtml += "</tr>";
+        });
+
+        tableHtml += "</table>";
+
+        document.getElementById("resultContainer").innerHTML = tableHtml;
+      };
+
+      reader.readAsText(file);
+    }
+  </script>
+</body>
+
+</html>
